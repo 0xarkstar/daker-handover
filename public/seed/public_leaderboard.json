@@ -17,6 +17,18 @@
   ],
   "extraLeaderboards": [
     {
+      "hackathonSlug": "monthly-vibe-coding-2026-02",
+      "updatedAt": "2026-03-09T10:00:00+09:00",
+      "entries": [
+        {
+          "rank": 1,
+          "teamName": "PromptRunners",
+          "score": 92.0,
+          "submittedAt": "2026-03-02T15:30:00+09:00"
+        }
+      ]
+    },
+    {
       "hackathonSlug": "daker-handover-2026-03",
       "updatedAt": "2026-04-17T10:00:00+09:00",
       "entries": [
