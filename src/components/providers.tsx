@@ -28,8 +28,10 @@ export function Providers({ children }: { readonly children: ReactNode }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <I18nProvider>{children}</I18nProvider>
-      <Toaster />
+      <I18nProvider>
+        {children}
+        <Toaster richColors />
+      </I18nProvider>
     </ThemeProvider>
   )
 }

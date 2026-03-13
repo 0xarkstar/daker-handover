@@ -156,7 +156,13 @@
                 "weightPercent": 70
               }
             ]
-          }
+          },
+          "rubricCriteria": [
+            { "key": "basic", "label": "기본구현", "maxPoints": 30, "description": "요구된 기본 기능이 올바르게 구현되었는가" },
+            { "key": "extension", "label": "확장/아이디어", "maxPoints": 30, "description": "추가 기능과 창의적인 아이디어" },
+            { "key": "completeness", "label": "완성도", "maxPoints": 25, "description": "UI/UX 완성도, 에러 처리, 반응형" },
+            { "key": "docs", "label": "문서", "maxPoints": 15, "description": "기획서, 솔루션 문서의 품질" }
+          ]
         },
         "schedule": {
           "timezone": "Asia/Seoul",

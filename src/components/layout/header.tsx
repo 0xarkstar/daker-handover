@@ -71,7 +71,7 @@ export function Header() {
                 size="sm"
                 className="h-7 px-2 text-xs"
                 onClick={() => setLocale(loc)}
-                aria-label={`언어: ${loc.toUpperCase()}`}
+                aria-label={`${t('common.language')}: ${loc.toUpperCase()}`}
               >
                 {loc.toUpperCase()}
               </Button>
@@ -80,7 +80,7 @@ export function Header() {
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger className="md:hidden" render={<Button variant="ghost" size="sm" aria-label="메뉴" />}>
+            <SheetTrigger className="md:hidden" render={<Button variant="ghost" size="sm" aria-label={t('common.menu')} />}>
               <Menu className="h-5 w-5" />
             </SheetTrigger>
             <SheetContent side="right" className="w-64 glass">
@@ -105,7 +105,7 @@ export function Header() {
                         size="sm"
                         className="h-7 px-2 text-xs"
                         onClick={() => setLocale(loc)}
-                        aria-label={`언어: ${loc.toUpperCase()}`}
+                        aria-label={`${t('common.language')}: ${loc.toUpperCase()}`}
                       >
                         {loc.toUpperCase()}
                       </Button>

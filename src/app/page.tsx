@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Code2, Trophy, Users } from 'lucide-react'
+import { ArrowRight, Code2, Trophy, Users, Search, UserPlus, Send, Medal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { HackathonCard } from '@/components/hackathon/hackathon-card'
 import { useI18n } from '@/i18n/context'
@@ -11,9 +12,11 @@ import { NumberTicker } from '@/components/ui/number-ticker'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 import { Marquee } from '@/components/ui/marquee'
 import { Badge } from '@/components/ui/badge'
+import { DataTools } from '@/components/data-tools'
 
 export default function HomePage() {
   const { t } = useI18n()
+  const [bannerDismissed, setBannerDismissed] = useState(false)
   const hackathons = getHackathons()
   const featured = hackathons.filter((h) => h.status !== 'ended')
   const hasEnded = hackathons.some((h) => h.status === 'ended')
@@ -22,6 +25,27 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16">
+      {/* Announcement Banner */}
+      {!bannerDismissed && (
+        <div
+          className="relative py-2 px-4 text-center text-sm text-white font-terminal"
+          style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
+        >
+          <Link
+            href="/hackathons/daker-handover-2026-03"
+            className="hover:underline underline-offset-2"
+          >
+            {t('home.announcement')}: DAKER Handover 2026-03
+          </Link>
+          <button
+            onClick={() => setBannerDismissed(true)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:opacity-70"
+            aria-label="Dismiss"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24">
         <DotPattern className="absolute inset-0 opacity-20 [mask-image:radial-gradient(500px_circle_at_center,white,transparent)]" />
@@ -83,6 +107,31 @@ export default function HomePage() {
           </Marquee>
         </section>
       )}
+
+      {/* How It Works */}
+      <section className="mx-auto max-w-6xl px-4">
+        <h2 className="mb-6 text-2xl font-bold font-terminal">
+          <span className="text-primary">{'// '}</span>{t('home.howItWorks')}
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: Search, title: t('home.browse'), desc: t('home.browseDesc'), color: 'text-primary', href: '/hackathons' },
+            { icon: UserPlus, title: t('home.teamUp'), desc: t('home.teamUpDesc'), color: 'text-green-500', href: '/camp' },
+            { icon: Send, title: t('home.submitProject'), desc: t('home.submitDesc'), color: 'text-blue-500', href: '/hackathons/daker-handover-2026-03#submit' },
+            { icon: Medal, title: t('home.compete'), desc: t('home.competeDesc'), color: 'text-yellow-500', href: '/rankings' },
+          ].map(({ icon: Icon, title, desc, color, href }) => (
+            <Link key={title} href={href}>
+              <div className="glass-card rounded-lg p-5 space-y-3 h-full">
+                <div className={`flex h-10 w-10 items-center justify-center rounded-lg bg-muted ${color}`}>
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-terminal text-sm font-semibold">{title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* Quick Stats */}
       <section className="mx-auto max-w-6xl px-4">
@@ -172,6 +221,17 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Data Tools */}
+      <section className="mx-auto max-w-6xl px-4 pb-8">
+        <div className="glass-card rounded-lg p-4 flex items-center justify-between">
+          <div>
+            <h3 className="font-terminal text-sm font-semibold">{t('home.dataBackup')}</h3>
+            <p className="text-xs text-muted-foreground">{t('home.dataBackupDesc')}</p>
+          </div>
+          <DataTools />
+        </div>
+      </section>
     </div>
   )
 }

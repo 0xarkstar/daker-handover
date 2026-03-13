@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select'
 import { useI18n } from '@/i18n/context'
 import { addTeam, getHackathons, updateTeam } from '@/lib/storage'
-import type { Team } from '@/types'
+import type { Team, TeamStatus } from '@/types'
 
 interface TeamFormProps {
   readonly hackathonSlug?: string
@@ -37,6 +37,9 @@ export function TeamForm({ hackathonSlug, onClose, editTeam }: TeamFormProps) {
   const [memberCount, setMemberCount] = useState(
     String(editTeam?.memberCount ?? 1)
   )
+  const [status, setStatus] = useState<TeamStatus>(
+    editTeam?.status ?? 'recruiting'
+  )
 
   const handleSave = () => {
     if (!selectedSlug || !name.trim()) return
@@ -48,6 +51,8 @@ export function TeamForm({ hackathonSlug, onClose, editTeam }: TeamFormProps) {
 
     const clampedMemberCount = Math.min(10, Math.max(1, Number(memberCount) || 1))
 
+    const isOpen = status === 'recruiting'
+
     if (editTeam) {
       updateTeam(editTeam.teamCode, {
         hackathonSlug: selectedSlug,
@@ -56,13 +61,16 @@ export function TeamForm({ hackathonSlug, onClose, editTeam }: TeamFormProps) {
         lookingFor,
         contact: { type: 'url', url: contactUrl.trim() },
         memberCount: clampedMemberCount,
+        status,
+        isOpen,
       })
     } else {
       const team: Team = {
-        teamCode: `T-${Date.now()}`,
+        teamCode: `T-${crypto.randomUUID().slice(0, 8)}`,
         hackathonSlug: selectedSlug,
         name: name.trim(),
-        isOpen: true,
+        isOpen,
+        status,
         memberCount: clampedMemberCount,
         lookingFor,
         intro: intro.trim(),
@@ -124,7 +132,7 @@ export function TeamForm({ hackathonSlug, onClose, editTeam }: TeamFormProps) {
           onChange={(e) => setLookingForText(e.target.value)}
           placeholder="Frontend, Backend, Designer"
         />
-        <p className="text-xs text-muted-foreground">쉼표로 구분 (예: Frontend, Backend, Designer)</p>
+        <p className="text-xs text-muted-foreground">{t('team.lookingForHint')}</p>
       </div>
 
       <div className="space-y-2">
@@ -149,6 +157,20 @@ export function TeamForm({ hackathonSlug, onClose, editTeam }: TeamFormProps) {
           value={memberCount}
           onChange={(e) => setMemberCount(e.target.value)}
         />
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="team-status" className="text-sm font-medium font-terminal">{t('team.status')}</label>
+        <Select value={status} onValueChange={(v) => setStatus(v as TeamStatus)}>
+          <SelectTrigger id="team-status" className="w-full">
+            <SelectValue placeholder={t('team.status')} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="recruiting">{t('team.recruiting')}</SelectItem>
+            <SelectItem value="active">{t('team.active')}</SelectItem>
+            <SelectItem value="archived">{t('team.archived')}</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="flex justify-end gap-2 pt-2">

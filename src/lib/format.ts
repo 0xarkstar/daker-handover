@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow, isAfter, isBefore, parseISO } from 'date-fns'
 import { ko, enUS, zhCN, ja } from 'date-fns/locale'
+import { t as translate } from '@/i18n/dictionaries'
 import type { Locale } from '@/types'
 
 const localeMap = {
@@ -88,10 +89,14 @@ export function getStatusLabel(
   status: string,
   locale: Locale = 'ko'
 ): string {
-  const labels: Record<string, Record<Locale, string>> = {
-    ongoing: { ko: '진행중', en: 'Ongoing', zh: '进行中', ja: '進行中' },
-    upcoming: { ko: '예정', en: 'Upcoming', zh: '即将开始', ja: '予定' },
-    ended: { ko: '종료', en: 'Ended', zh: '已结束', ja: '終了' },
+  return translate(`status.${status}`, locale)
+}
+
+export function sanitizeUrl(url: string): string {
+  try {
+    const parsed = new URL(url)
+    return ['http:', 'https:', 'mailto:'].includes(parsed.protocol) ? url : '#'
+  } catch {
+    return '#'
   }
-  return labels[status]?.[locale] ?? status
 }

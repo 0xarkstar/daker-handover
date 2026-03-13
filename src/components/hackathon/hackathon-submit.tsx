@@ -48,8 +48,9 @@ export function HackathonSubmit({ sections, slug }: HackathonSubmitProps) {
       submittedAt: now,
     }
 
-    const existingCount = getSubmissions(slug).length
-    const score = Math.max(50, 100 - existingCount * 5)
+    const existingSubmissions = getSubmissions(slug)
+    const isFirstSubmission = existingSubmissions.length === 0
+    const score = Math.min(100, (existingSubmissions.length + 1) * 33)
 
     addSubmission(submission)
 
@@ -67,11 +68,13 @@ export function HackathonSubmit({ sections, slug }: HackathonSubmitProps) {
     setNotes('')
     setItems({})
 
-    confettiRef.current?.fire({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    })
+    if (isFirstSubmission) {
+      confettiRef.current?.fire({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      })
+    }
   }, [teamName, notes, items, slug])
 
   return (
@@ -160,7 +163,7 @@ export function HackathonSubmit({ sections, slug }: HackathonSubmitProps) {
         if (submissions.length === 0) return null
         return (
           <div className="mt-6 space-y-2">
-            <h4 className="font-terminal font-medium">이전 제출 내역</h4>
+            <h4 className="font-terminal font-medium">{t('submit.history')}</h4>
             {submissions.map((sub) => (
               <div key={sub.id} className="rounded border p-3 text-sm">
                 <div className="font-medium">{sub.teamName}</div>

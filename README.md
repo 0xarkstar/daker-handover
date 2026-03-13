@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DAKER Hackathon Platform
 
-## Getting Started
+> 긴급 인수인계 해커톤 — 해커톤 플랫폼 클론
 
-First, run the development server:
+daker.ai 해커톤 플랫폼을 Next.js 16으로 재구현한 클라이언트 사이드 프로젝트입니다. 13개 체계적 분석 문서를 기반으로, "Code Forge: Brutal Edition" 디자인 시스템을 적용했습니다.
+
+## Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`http://localhost:3000`에서 확인할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js 16.1.6 / React 19 (App Router)
+- Tailwind CSS v4 + shadcn/ui + Magic UI
+- TypeScript
+- motion + canvas-confetti
+- 4-language i18n (KO/EN/ZH/JA)
+- localStorage (client-side persistence)
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+- **5개 페이지**: 홈, 해커톤 목록, 해커톤 상세(8탭), 캠프(팀), 랭킹
+- **디자인 시스템**: Brutal Shell(2px offset shadow) + Glass Interior(backdrop-blur)
+- **검색/필터/정렬**: 해커톤 목록 필터링, 상태별/카테고리별 필터
+- **팀 관리**: 팀 생성, 조회, 멤버 표시
+- **다크/라이트 모드**: CSS 변수 기반 테마 전환
+- **접근성**: skip-to-content, ARIA, reduced motion, WCAG contrast
+- **분석 문서**: `/analysis/`에 13개 플랫폼 분석 파일 (350+ 관찰 사항)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                  # Pages (App Router)
+│   ├── hackathons/       # 목록 + [slug] 상세
+│   ├── camp/             # 팀
+│   └── rankings/         # 랭킹
+├── components/
+│   ├── layout/           # Header, Footer
+│   ├── hackathon/        # 9 components
+│   ├── camp/             # TeamCard, TeamForm
+│   ├── rankings/         # RankingTable
+│   └── ui/               # 21 shadcn + Magic UI
+├── i18n/                 # dictionaries, context
+├── lib/                  # utils, storage, seed, format
+└── types/                # TypeScript type definitions
+```
 
-## Deploy on Vercel
+## i18n Support
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| 코드 | 언어 |
+|------|------|
+| KO | 한국어 |
+| EN | English |
+| ZH | 中文 |
+| JA | 日本語 |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+헤더의 언어 선택기로 전환합니다. `i18n/dictionaries.ts`에서 번역을 관리합니다.
+
+## Development
+
+**새 언어 추가**: `i18n/dictionaries.ts`에 새 locale 딕셔너리를 추가합니다.
+
+**새 해커톤 추가**: `lib/seed.ts`의 시드 데이터에 항목을 추가합니다.
+
+**컴포넌트 추가**: `npx shadcn@latest add <component>` 또는 Magic UI 컴포넌트는 `npx shadcn@latest add "https://magicui.design/r/<name>.json"`
+
+## License
+
+MIT

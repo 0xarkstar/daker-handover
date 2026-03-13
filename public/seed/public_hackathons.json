@@ -18,7 +18,11 @@
       "detail": "/hackathons/aimers-8-model-lite",
       "rules": "https://example.com/public/rules/aimers8",
       "faq": "https://example.com/public/faq/aimers8"
-    }
+    },
+    "hostName": "Daker",
+    "totalPrizeKRW": 5300000,
+    "teamCount": 42,
+    "bannerGradient": "linear-gradient(135deg, #6366f1, #8b5cf6)"
   },
   {
     "slug": "monthly-vibe-coding-2026-02",
@@ -39,7 +43,11 @@
       "detail": "/hackathons/monthly-vibe-coding-2026-02",
       "rules": "https://example.com/public/rules/vibe202602",
       "faq": "https://example.com/public/faq/vibe202602"
-    }
+    },
+    "hostName": "Daker",
+    "totalPrizeKRW": 2000000,
+    "teamCount": 18,
+    "bannerGradient": "linear-gradient(135deg, #06b6d4, #3b82f6)"
   },
   {
     "slug": "daker-handover-2026-03",
@@ -61,6 +69,10 @@
       "detail": "/hackathons/daker-handover-2026-03",
       "rules": "https://example.com/public/rules/daker-handover-202603",
       "faq": "https://example.com/public/faq/daker-handover-202603"
-    }
+    },
+    "hostName": "Daker",
+    "totalPrizeKRW": 10000000,
+    "teamCount": 7,
+    "bannerGradient": "linear-gradient(135deg, #f59e0b, #ef4444)"
   }
 ]

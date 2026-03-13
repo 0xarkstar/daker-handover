@@ -29,7 +29,14 @@ function getItem<T>(key: string, fallback: T): T {
 
 function setItem<T>(key: string, value: T): void {
   if (typeof window === 'undefined') return
-  localStorage.setItem(key, JSON.stringify(value))
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch (e) {
+    if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+      console.error('localStorage quota exceeded. Please clear some data.')
+    }
+    throw e
+  }
 }
 
 // ===== Hackathons =====
@@ -154,6 +161,15 @@ export function setTeams(data: Team[]): void {
 
 export function setLeaderboards(data: Record<string, LeaderboardData>): void {
   setItem(KEYS.leaderboards, data)
+}
+
+// ===== Voting =====
+export function hasVoted(slug: string, teamName: string): boolean {
+  return getItem<boolean>(`voted_${slug}_${teamName}`, false)
+}
+
+export function castVote(slug: string, teamName: string): void {
+  setItem(`voted_${slug}_${teamName}`, true)
 }
 
 export function resetAll(): void {

@@ -14,7 +14,7 @@ import { TeamCard } from '@/components/camp/team-card'
 import { TeamForm } from '@/components/camp/team-form'
 import { useI18n } from '@/i18n/context'
 import { getHackathons, getTeams } from '@/lib/storage'
-import type { Team } from '@/types'
+import type { Team, TeamStatus } from '@/types'
 
 function CampContent() {
   const { t } = useI18n()
@@ -30,7 +30,15 @@ function CampContent() {
     hackathonFilter
   )
 
-  const teams = getTeams(selectedFilter)
+  const [statusFilter, setStatusFilter] = useState<TeamStatus | undefined>(undefined)
+
+  const allTeams = getTeams(selectedFilter)
+  const teams = statusFilter
+    ? allTeams.filter((team) => {
+        const effective: TeamStatus = team.status ?? (team.isOpen ? 'recruiting' : 'archived')
+        return effective === statusFilter
+      })
+    : allTeams
 
   const handleRefresh = useCallback(() => {
     setRefreshKey((prev) => prev + 1)
@@ -81,6 +89,29 @@ function CampContent() {
             onClick={() => setSelectedFilter(h.slug)}
           >
             {h.title}
+          </Button>
+        ))}
+      </div>
+
+      {/* Status filter */}
+      <div className="mb-6 flex flex-wrap gap-2">
+        <Button
+          className="brutal-button"
+          variant={statusFilter === undefined ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setStatusFilter(undefined)}
+        >
+          {t('filter.all')}
+        </Button>
+        {(['recruiting', 'active', 'archived'] as const).map((s) => (
+          <Button
+            key={s}
+            className="brutal-button"
+            variant={statusFilter === s ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setStatusFilter(s)}
+          >
+            {t(`team.${s}`)}
           </Button>
         ))}
       </div>

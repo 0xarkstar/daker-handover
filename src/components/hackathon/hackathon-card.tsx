@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { Calendar, Clock } from 'lucide-react'
+import { Calendar, Clock, Building2, Trophy, Users } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useI18n } from '@/i18n/context'
-import { getDDay, formatDate, getStatusClassName } from '@/lib/format'
+import { getDDay, formatDate, formatKRW, getStatusClassName } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Hackathon } from '@/types'
 
@@ -28,8 +28,15 @@ export function HackathonCard({ hackathon }: HackathonCardProps) {
   return (
     <Link href={`/hackathons/${hackathon.slug}`}>
       <Card className="glass-card group h-full overflow-hidden cursor-pointer">
-        {/* Colored header strip */}
-        <div className={cn('h-2', accentClass)} />
+        {/* Gradient or solid header banner */}
+        {hackathon.bannerGradient ? (
+          <div
+            className="h-12"
+            style={{ background: hackathon.bannerGradient }}
+          />
+        ) : (
+          <div className={cn('h-12', accentClass)} />
+        )}
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
@@ -41,8 +48,31 @@ export function HackathonCard({ hackathon }: HackathonCardProps) {
               {t(`status.${hackathon.status}`)}
             </Badge>
           </div>
+          {hackathon.hostName && (
+            <div className="flex items-center gap-1 mt-1.5 text-xs text-muted-foreground">
+              <Building2 className="h-3 w-3 shrink-0" />
+              <span className="truncate">{hackathon.hostName}</span>
+            </div>
+          )}
         </CardHeader>
         <CardContent className="space-y-3">
+          {/* Meta badges: prize + team count */}
+          {(hackathon.totalPrizeKRW || hackathon.teamCount) && (
+            <div className="flex flex-col sm:flex-row gap-1.5">
+              {hackathon.totalPrizeKRW && (
+                <Badge variant="outline" className="text-xs font-terminal gap-1">
+                  <Trophy className="h-3 w-3" />
+                  {formatKRW(hackathon.totalPrizeKRW)}
+                </Badge>
+              )}
+              {hackathon.teamCount && (
+                <Badge variant="outline" className="text-xs font-terminal gap-1">
+                  <Users className="h-3 w-3" />
+                  {hackathon.teamCount} {t('team.members')}
+                </Badge>
+              )}
+            </div>
+          )}
           <div className="flex flex-wrap gap-1.5">
             {hackathon.tags.map((tag) => (
               <Badge key={tag} variant="outline" className="text-xs font-terminal">

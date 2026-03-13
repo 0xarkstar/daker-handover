@@ -19,6 +19,10 @@ export interface Hackathon {
   readonly thumbnailUrl: string
   readonly period: HackathonPeriod
   readonly links: HackathonLinks
+  readonly hostName?: string
+  readonly totalPrizeKRW?: number
+  readonly teamCount?: number
+  readonly bannerGradient?: string
 }
 
 // ===== Hackathon Detail =====
@@ -46,6 +50,13 @@ export interface ScoreBreakdownItem {
   readonly weightPercent: number
 }
 
+export interface RubricCriterion {
+  readonly key: string
+  readonly label: string
+  readonly maxPoints: number
+  readonly description: string
+}
+
 export interface EvalSection {
   readonly metricName: string
   readonly description: string
@@ -54,6 +65,7 @@ export interface EvalSection {
     readonly label: string
     readonly breakdown: readonly ScoreBreakdownItem[]
   }
+  readonly rubricCriteria?: readonly RubricCriterion[]
   readonly limits?: {
     readonly maxRuntimeSec?: number
     readonly maxSubmissionsPerDay?: number
@@ -135,6 +147,7 @@ export interface LeaderboardEntry {
     readonly participant: number
     readonly judge: number
   }
+  readonly peerVotes?: number
   readonly artifacts?: LeaderboardArtifacts
 }
 
@@ -150,11 +163,14 @@ export interface TeamContact {
   readonly url: string
 }
 
+export type TeamStatus = 'recruiting' | 'active' | 'archived'
+
 export interface Team {
   readonly teamCode: string
   readonly hackathonSlug: string
   readonly name: string
   readonly isOpen: boolean
+  readonly status?: TeamStatus
   readonly memberCount: number
   readonly lookingFor: readonly string[]
   readonly intro: string

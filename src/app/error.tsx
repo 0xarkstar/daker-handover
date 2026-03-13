@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect } from 'react'
+
 export default function Error({
   error,
   reset,
@@ -7,6 +9,10 @@ export default function Error({
   readonly error: Error
   readonly reset: () => void
 }) {
+  useEffect(() => {
+    console.error('Application error:', error)
+  }, [error])
+
   return (
     <div className="flex min-h-[400px] flex-col items-center justify-center gap-6 px-4">
       <div className="w-full max-w-lg terminal rounded-lg p-6 space-y-3" style={{ boxShadow: '0 0 20px oklch(0.704 0.191 22.216 / 30%)' }}>
@@ -22,7 +28,7 @@ export default function Error({
             ERROR: Process terminated unexpectedly
           </p>
           <p className="text-red-300/70 font-terminal text-xs pl-4">
-            {error.message}
+            An unexpected error occurred. Please try again.
           </p>
         </div>
       </div>

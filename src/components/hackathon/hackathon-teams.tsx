@@ -28,7 +28,7 @@ export function HackathonTeams({ sections, slug }: HackathonTeamsProps) {
             <Link href={`/camp?hackathon=${slug}&create=true`}>
               <Button size="sm" className="gap-1">
                 <Plus className="h-4 w-4" />
-                팀 만들기
+                {t('team.create')}
               </Button>
             </Link>
           )}
